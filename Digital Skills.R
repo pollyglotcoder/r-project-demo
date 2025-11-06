@@ -220,11 +220,11 @@ ggplot(plot_data, aes(x = AGESHORT_factor, fill = CDTRANBC_new_factor)) +
   scale_y_continuous(labels = scales::percent_format()) +
   scale_fill_brewer(palette = "RdYlGn") + 
   labs(
-    title = "年龄组与电子技能重要性认知",
-    subtitle = "基于 20,816 个完整回复",
-    x = "年龄组 (AGESHORT_factor)",
-    y = "回复百分比",
-    fill = "重要性认知 \n(CDTRANBC_new_factor)" # \n 是换行
+    title = "Perception of the Importance of Digital Skills",
+    subtitle = "Based on 20,816 complete replies",
+    x = "Age group (AGESHORT_factor)",
+    y = "Response percentage",
+    fill = "Perception of the Importance \n(CDTRANBC_new_factor)" 
   ) +
   theme_minimal()
 
@@ -237,13 +237,13 @@ data_summary_observed <- plot_data %>%
     total_in_group = sum(count),
     proportion = count / total_in_group
   ) %>%
-  ungroup() # 完成计算，取消分组
+  ungroup() 
 
-# (可选) 给你的认知等级添加更清晰的标签，用于图例
+
 
 data_summary_observed$CDTRANBC_new_factor <- factor(data_summary_observed$CDTRANBC_new_factor, 
                                                     levels = c(1, 2, 3, 4), 
-                                                    labels = c("1 (最低)", "2 (中低)", "3 (中高)", "4 (最高)"))
+                                                    labels = c("1 (Low)", "2 (Medium)", "3 (Medium high)", "4 (High)"))
 
 
 
@@ -251,11 +251,11 @@ ggplot(data_summary_observed, aes(x = AGESHORT_factor, y = proportion, color = C
   geom_line(size = 1.2) +
   geom_point(size = 3) +
   labs(
-    title = "真实数据：年龄组与电子技能重要性认知",
-    subtitle = "基于 20,816 个完整回复的观测百分比",
-    x = "年龄组",
-    y = "回复百分比",
-    color = "重要性认知等级" # 图例标题
+    title = "Perception of the Importance of Digital Skills",
+    subtitle = "Based on 20,816 complete replies",
+    x = "Age group (AGESHORT_factor)",
+    y = "Response percentage",
+    color = "Perception of the Importance \n(CDTRANBC_new_factor)" 
   ) +
   scale_y_continuous(labels = scales::percent_format()) +
   scale_color_brewer(palette = "Set1") +
@@ -277,7 +277,7 @@ data_summary_observed2 <- data_mutate %>%
       !is.na(QWork_factor)           
   ) %>%
   group_by(QWork_factor, CDTRANBC_new_factor) %>%
-  summarise(count = n(), .groups = 'drop') %>% # .groups = 'drop' 是好习惯
+  summarise(count = n(), .groups = 'drop') %>%
   group_by(QWork_factor) %>%
   mutate(
     total_in_group = sum(count),
@@ -288,7 +288,7 @@ data_summary_observed2 <- data_mutate %>%
 
 data_summary_observed2$CDTRANBC_new_factor <- factor(data_summary_observed2$CDTRANBC_new_factor, 
                                                     levels = c("1", "2", "3", "4"), 
-                                                    labels = c("1 (最低)", "2 (中低)", "3 (中高)", "4 (最高)"))
+                                                    labels = c("1 (Low)", "2 (Medium)", "3 (medium high)", "4 (High)"))
 
 
 
@@ -296,39 +296,16 @@ ggplot(data_summary_observed2, aes(x = QWork_factor, y = proportion, color = CDT
   geom_line(size = 1.2) +
   geom_point(size = 3) +
   labs(
-    title = "真实数据：工作状态与电子技能重要性认知",
-    subtitle = "基于模型使用的完整回复",
-    x = "工作状态 (QWork_factor)",
-    y = "回复百分比",
-    color = "重要性认知等级" # 图例标题
+    title = "Work status and perception of the importance of digital skills",
+    x = "Work status (QWork_factor)",
+    y = "Response percentage",
+    color = "Perception of the Importance" 
   ) +
   
   scale_y_continuous(labels = scales::percent_format()) +
   scale_color_brewer(palette = "Set1") +
   theme_minimal()
 
-
-
-
-summary(data_mutate[c("CDTRANBC_new_factor", "AGESHORT_factor")])
-# 3. Clean and tidy the data
-
-# Select import variables
-
-selected_data <- data %>% 
-  dplyr::select(
-    # Key variables
-    CDTRANBC,
-    
-    # Demographic characteristics
-    AGESHORT, GENDER, QWork, EDUCAT4, FINHARD,
-    
-    # Digital skills related
-    CINTOFT, CDIGTRA12, CSMARTU_001,CSMARTU_002,CSMARTU_003,CSMARTU_004,CSMARTU_005,CSMARTU_006,
-    
-    # occupation-related
-    OCCUPATION,EmpNo,SVise
-  )
 
 
 # Screening effective samples
