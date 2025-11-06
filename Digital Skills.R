@@ -178,6 +178,7 @@ selected_data <- data_mutate %>%
     OCCUPATION,EmpNo,SVise,SSDIGSPEED
   )
 
+###Logit regression
 
 data_mutate %>% count(SSDIGSPEED)
 
